@@ -751,8 +751,6 @@ def convert_image():
     except Exception as e:
         return f"Could not convert image: {e}", 400
 
-
-if __name__ == "__main__":
     # ==================== SEO ====================
 
 @app.route("/robots.txt")
@@ -798,4 +796,7 @@ def sitemap_xml():
     return xml, 200, {
         "Content-Type": "application/xml; charset=utf-8"
     }
+
+
+if __name__ == "__main__":
     app.run(debug=True)
