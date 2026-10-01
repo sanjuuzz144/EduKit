@@ -753,4 +753,49 @@ def convert_image():
 
 
 if __name__ == "__main__":
+    # ==================== SEO ====================
+
+@app.route("/robots.txt")
+def robots_txt():
+    content = """User-agent: *
+Allow: /
+
+Disallow: /admin
+Disallow: /admin/
+Disallow: /logout
+Disallow: /admin/logout
+
+Sitemap: https://edukit-3q1k.onrender.com/sitemap.xml
+"""
+    return content, 200, {
+        "Content-Type": "text/plain; charset=utf-8"
+    }
+
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    urls = [
+        "/",
+        "/tools",
+        "/cgpa",
+        "/percentage",
+        "/attendance",
+        "/qr",
+        "/pdf",
+        "/image-tools"
+    ]
+
+    xml_urls = "\n".join(
+        f"    <url><loc>https://edukit-3q1k.onrender.com{url}</loc></url>"
+        for url in urls
+    )
+
+    xml = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{xml_urls}
+</urlset>"""
+
+    return xml, 200, {
+        "Content-Type": "application/xml; charset=utf-8"
+    }
     app.run(debug=True)
