@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Percentage Calculator - EduKit</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .percentage-page{
+            min-height:calc(100vh - 70px);
+            padding:48px 18px 70px;
+            background:
+                radial-gradient(circle at 8% 12%,rgba(6,182,212,.13),transparent 30%),
+                radial-gradient(circle at 92% 18%,rgba(91,92,226,.14),transparent 30%);
+        }
+        .percentage-wrap{max-width:760px;margin:auto}
+        .percentage-head{text-align:center;margin-bottom:26px}
+        .percentage-badge{
+            display:inline-flex;padding:8px 13px;border-radius:999px;
+            background:#ecfeff;color:#087f8c;font-size:13px;font-weight:800;
+        }
+        .percentage-head h1{
+            font-size:clamp(32px,5vw,46px);margin:14px 0 8px;
+            letter-spacing:-1.3px;
+        }
+        .percentage-head p{color:#667085;margin:0;line-height:1.6}
+        .percentage-card{
+            background:rgba(255,255,255,.93);
+            border:1px solid #e6e9f2;
+            border-radius:28px;padding:30px;
+            box-shadow:0 22px 60px rgba(30,41,90,.11);
+        }
+        .mark-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .mark-box{
+            padding:17px;border:1px solid #e4e8f0;border-radius:17px;
+            background:#fbfcff;
+        }
+        .mark-label{
+            display:block;font-size:13px;font-weight:800;
+            color:#344054;margin-bottom:9px;
+        }
+        .mark-input{
+            width:100%;height:54px;padding:0 15px;
+            border:1px solid #dfe4ee;border-radius:13px;
+            background:#fff;color:#172033;font:inherit;font-size:16px;
+            outline:none;
+        }
+        .mark-input:focus{
+            border-color:#06b6d4;
+            box-shadow:0 0 0 4px rgba(6,182,212,.10);
+        }
+        .percentage-btn{
+            width:100%;height:54px;margin-top:20px;border:0;border-radius:15px;
+            color:#fff;font-weight:800;font-size:15px;cursor:pointer;
+            background:linear-gradient(135deg,#0891b2,#5b5ce2);
+            box-shadow:0 12px 28px rgba(6,182,212,.20);
+            transition:.2s;
+        }
+        .percentage-btn:hover{transform:translateY(-2px)}
+        .percentage-result{
+            margin-top:22px;padding:24px;text-align:center;border-radius:20px;
+            background:linear-gradient(135deg,#ecfeff,#eef2ff);
+            border:1px solid #d9f3f5;
+        }
+        .percentage-result small{display:block;color:#667085;font-weight:700}
+        .percentage-result strong{
+            display:block;margin-top:6px;font-size:48px;
+            color:#087f8c;letter-spacing:-2px;
+        }
+        .percentage-error{
+            margin-top:18px;padding:14px;border-radius:14px;
+            background:#fff1f0;color:#b42318;border:1px solid #ffd6d2;
+        }
+        .percentage-tip{
+            margin-top:18px;text-align:center;color:#667085;font-size:12px;
+        }
+        .percentage-back{
+            display:block;text-align:center;margin-top:22px;
+            color:#5b5ce2;font-weight:800;font-size:14px;
+        }
+        @media(max-width:600px){
+            .percentage-page{padding:30px 14px 50px}
+            .percentage-card{padding:22px}
+            .mark-grid{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="/" class="logo">🎓 EduKit</a>
+    <span style="color:#667085;font-size:13px">Student tools, made simple.</span>
+</header>
+
+<main class="percentage-page">
+    <div class="percentage-wrap">
+
+        <div class="percentage-head">
+            <span class="percentage-badge">📊 Academic Calculator</span>
+            <h1>Percentage Calculator</h1>
+            <p>Enter your obtained marks and total marks to calculate your percentage instantly.</p>
+        </div>
+
+        <div class="percentage-card">
+            <form method="POST">
+                <div class="mark-grid">
+                    <div class="mark-box">
+                        <label class="mark-label" for="obtained">Obtained Marks</label>
+                        <input class="mark-input" id="obtained"
+                               type="number" name="obtained"
+                               placeholder="e.g. 965" step="any" required>
+                    </div>
+
+                    <div class="mark-box">
+                        <label class="mark-label" for="total">Total Marks</label>
+                        <input class="mark-input" id="total"
+                               type="number" name="total"
+                               placeholder="e.g. 1200" step="any" required>
+                    </div>
+                </div>
+
+                <button class="percentage-btn" type="submit">
+                    Calculate Percentage →
+                </button>
+            </form>
+
+            {% if result is not none %}
+            <div class="percentage-result">
+                <small>Your Percentage</small>
+                <strong>{{ result }}%</strong>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="percentage-error">{{ error }}</div>
+            {% endif %}
+
+            <div class="percentage-tip">
+                💡 Formula: (Obtained Marks ÷ Total Marks) × 100
+            </div>
+        </div>
+
+        <a class="percentage-back" href="/">← Back to EduKit</a>
+    </div>
+</main>
+</body>
+</html>

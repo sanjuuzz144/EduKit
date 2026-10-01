@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Student Login - EduKit{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="brand">🎓 <b>EduKit</b></div>
+    <div class="eyebrow">STUDENT PORTAL</div>
+    <h1>Welcome back</h1>
+    <p>Sign in with your username and password.</p>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+    <form method="post">
+      <label>Username</label>
+      <input name="username" autocomplete="username" placeholder="Enter username" required>
+      <label>Password</label>
+      <input name="password" type="password" autocomplete="current-password" placeholder="Enter password" required>
+      <button type="submit">Sign in →</button>
+    </form>
+    <a href="/">← Back to EduKit</a>
+  </div>
+</div>
+<style>
+.auth-page{min-height:72vh;display:grid;place-items:center;padding:40px 18px;background:#f5f7ff}
+.auth-card{width:min(420px,100%);padding:32px;border-radius:24px;background:#fff;box-shadow:0 20px 60px #1e293b18}
+.auth-card .brand{font-size:22px;color:#4f46e5}.eyebrow{font-size:10px;font-weight:900;letter-spacing:1.5px;color:#667085;margin-top:25px}
+.auth-card h1{margin:8px 0}.auth-card p{color:#667085}.auth-card label{display:block;font-size:12px;font-weight:800;margin:15px 0 6px}
+.auth-card input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d0d5dd;border-radius:10px}.auth-card button{width:100%;margin-top:20px;padding:12px;border:0;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-weight:900;cursor:pointer}.auth-card a{display:block;text-align:center;margin-top:18px;color:#4f46e5;text-decoration:none;font-size:12px;font-weight:800}.error{padding:10px;border-radius:10px;background:#fef3f2;color:#b42318;font-size:12px;font-weight:700}
+</style>
+{% endblock %}

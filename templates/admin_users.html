@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}User Manager - EduKit{% endblock %}
+{% block content %}
+<section class="manager">
+  <div class="manager-head">
+    <div><a href="/admin">← Admin Dashboard</a><h1>👥 User Manager</h1><p>Edit user details and control access.</p></div>
+  </div>
+
+  {% set edit_id = request.args.get('edit', '') %}
+  {% set edit_user = none %}
+  {% for u in users %}
+    {% if u["id"]|string == edit_id %}{% set edit_user = u %}{% endif %}
+  {% endfor %}
+
+  <div class="manager-grid">
+    <section class="card">
+      <h2>{{ "Edit User" if edit_user else "Add User" }}</h2>
+      <form action="/admin/users/save" method="post">
+        <input type="hidden" name="user_id" value="{{ edit_user['id'] if edit_user else '' }}">
+        <label>Name<input name="name" required value="{{ edit_user['name'] if edit_user else '' }}"></label>
+        <label>Username<input name="username" required value="{{ edit_user['username'] if edit_user else '' }}"></label>
+        <label>Password<input name="password" type="password" minlength="6" placeholder="{{ 'Leave blank to keep current password' if edit_user else 'Set login password' }}" {% if not edit_user %}required{% endif %}></label>
+        <label>Email<input name="email" type="email" value="{{ edit_user['email'] if edit_user else '' }}"></label>
+        <label>Role<select name="role">
+          {% for role in ["Student","Teacher","Staff","Admin"] %}
+            <option {% if edit_user and edit_user["role"] == role %}selected{% endif %}>{{ role }}</option>
+          {% endfor %}
+        </select></label>
+        <button type="submit">{{ "Save Changes" if edit_user else "Create User" }} →</button>
+        {% if edit_user %}<a class="cancel" href="/admin/users">Cancel Edit</a>{% endif %}
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Access Control</h2>
+      <p class="hint">Disabled users remain in the database but cannot sign in through EduKit's user login.</p>
+      <div class="access-info">🟢 <b>Active</b> — user can access EduKit</div>
+      <div class="access-info blocked">🔴 <b>Blocked</b> — user access is disabled</div>
+      <a class="back" href="/admin">Back to Admin Dashboard</a>
+    </section>
+  </div>
+
+  <section class="card table-card">
+    <h2>All Users</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Access</th><th>Actions</th></tr></thead>
+      <tbody>
+      {% for u in users %}
+        <tr>
+          <td><b>{{ u["name"] }}</b></td><td>{{ u["username"] }}</td><td>{{ u["email"] or "—" }}</td><td>{{ u["role"] }}</td>
+          <td><span class="{{ 'on' if u['access'] else 'off' }}">{{ "Active" if u["access"] else "Blocked" }}</span></td>
+          <td class="actions">
+            <a href="/admin/users?edit={{ u['id'] }}">Edit</a>
+            <form method="post" action="/admin/users/toggle/{{ u['id'] }}"><button type="submit">{{ "Disable" if u["access"] else "Enable" }}</button></form>
+            <form method="post" action="/admin/users/delete/{{ u['id'] }}" onsubmit="return confirm('Delete this user?')"><button class="del" type="submit">Delete</button></form>
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="6" class="empty">No users yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table></div>
+  </section>
+</section>
+<style>
+.manager{max-width:1160px;margin:auto;padding:35px 18px 70px}.manager-head{padding:26px;border-radius:22px;background:linear-gradient(135deg,#312e81,#7c3aed);color:#fff}.manager-head a{color:#ddd6fe;text-decoration:none;font-weight:800}.manager-head h1{color:#fff;margin:9px 0 4px}.manager-head p{margin:0;color:#ddd6fe}.manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:18px 0}.card{background:#fff;border:1px solid #e6e9f2;border-radius:20px;padding:22px;box-shadow:0 12px 30px rgba(30,41,90,.06)}.card h2{margin-top:0;color:#172033}.card label{display:block;font-size:12px;font-weight:800;color:#344054;margin:12px 0}.card input,.card select{width:100%;box-sizing:border-box;margin-top:6px;padding:11px;border:1px solid #d0d5dd;border-radius:10px;font:inherit}.card button{border:0;border-radius:10px;padding:11px 14px;background:#4f46e5;color:#fff;font-weight:800;cursor:pointer}.cancel,.back{display:inline-block;margin:12px 0;color:#4f46e5;font-weight:700;text-decoration:none}.hint{color:#667085;line-height:1.6}.access-info{padding:12px;border-radius:10px;background:#ecfdf3;color:#027a48;margin:9px 0}.access-info.blocked{background:#fef2f2;color:#b42318}.table-card{margin-top:18px}.scroll{overflow:auto}table{width:100%;min-width:850px;border-collapse:collapse}th,td{padding:12px 9px;border-bottom:1px solid #edf0f5;text-align:left;font-size:13px}th{font-size:11px;color:#667085;text-transform:uppercase}.on{color:#027a48;font-weight:800}.off{color:#b42318;font-weight:800}.actions{display:flex;gap:6px;align-items:center}.actions a,.actions button{font-size:12px;padding:7px 9px;background:#eef2ff;color:#3730a3;text-decoration:none;border-radius:8px}.actions form{margin:0}.actions .del{background:#fef2f2;color:#b42318}.empty{text-align:center;color:#667085}
+html.dark-mode .card{background:#111827;border-color:#263044}html.dark-mode .card h2,html.dark-mode .card label{color:#f8fafc}html.dark-mode .card input,html.dark-mode .card select{background:#0f172a;color:#fff;border-color:#334155}html.dark-mode td{border-color:#263044;color:#e5e7eb}
+@media(max-width:760px){.manager-grid{grid-template-columns:1fr}}
+</style>
+{% endblock %}

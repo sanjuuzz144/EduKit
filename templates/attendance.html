@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Attendance Calculator - EduKit</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .attendance-page{
+            min-height:calc(100vh - 70px);
+            padding:48px 18px 70px;
+            background:
+                radial-gradient(circle at 8% 12%,rgba(16,185,129,.13),transparent 30%),
+                radial-gradient(circle at 92% 18%,rgba(91,92,226,.14),transparent 30%);
+        }
+        .attendance-wrap{max-width:760px;margin:auto}
+        .attendance-head{text-align:center;margin-bottom:26px}
+        .attendance-badge{
+            display:inline-flex;padding:8px 13px;border-radius:999px;
+            background:#ecfdf3;color:#087443;font-size:13px;font-weight:800;
+        }
+        .attendance-head h1{
+            font-size:clamp(32px,5vw,46px);margin:14px 0 8px;
+            letter-spacing:-1.3px;
+        }
+        .attendance-head p{color:#667085;margin:0;line-height:1.6}
+        .attendance-card{
+            background:rgba(255,255,255,.93);
+            border:1px solid #e6e9f2;border-radius:28px;padding:30px;
+            box-shadow:0 22px 60px rgba(30,41,90,.11);
+        }
+        .attendance-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        .attendance-box{
+            padding:17px;border:1px solid #e4e8f0;border-radius:17px;
+            background:#fbfcff;
+        }
+        .attendance-label{
+            display:block;font-size:13px;font-weight:800;
+            color:#344054;margin-bottom:9px;
+        }
+        .attendance-input{
+            width:100%;height:54px;padding:0 15px;
+            border:1px solid #dfe4ee;border-radius:13px;
+            background:#fff;color:#172033;font:inherit;font-size:16px;
+            outline:none;
+        }
+        .attendance-input:focus{
+            border-color:#10b981;
+            box-shadow:0 0 0 4px rgba(16,185,129,.10);
+        }
+        .attendance-btn{
+            width:100%;height:54px;margin-top:20px;border:0;border-radius:15px;
+            color:#fff;font-weight:800;font-size:15px;cursor:pointer;
+            background:linear-gradient(135deg,#059669,#5b5ce2);
+            box-shadow:0 12px 28px rgba(16,185,129,.20);
+            transition:.2s;
+        }
+        .attendance-btn:hover{transform:translateY(-2px)}
+        .attendance-result{
+            margin-top:22px;padding:24px;text-align:center;border-radius:20px;
+            background:linear-gradient(135deg,#ecfdf3,#eef2ff);
+            border:1px solid #d8f3e5;
+        }
+        .attendance-result small{display:block;color:#667085;font-weight:700}
+        .attendance-result strong{
+            display:block;margin-top:6px;font-size:48px;
+            color:#087443;letter-spacing:-2px;
+        }
+        .attendance-error{
+            margin-top:18px;padding:14px;border-radius:14px;
+            background:#fff1f0;color:#b42318;border:1px solid #ffd6d2;
+        }
+        .attendance-tip{
+            margin-top:18px;text-align:center;color:#667085;font-size:12px;
+        }
+        .attendance-back{
+            display:block;text-align:center;margin-top:22px;
+            color:#5b5ce2;font-weight:800;font-size:14px;
+        }
+        @media(max-width:600px){
+            .attendance-page{padding:30px 14px 50px}
+            .attendance-card{padding:22px}
+            .attendance-grid{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="/" class="logo">🎓 EduKit</a>
+    <span style="color:#667085;font-size:13px">Student tools, made simple.</span>
+</header>
+
+<main class="attendance-page">
+    <div class="attendance-wrap">
+
+        <div class="attendance-head">
+            <span class="attendance-badge">📅 Academic Calculator</span>
+            <h1>Attendance Calculator</h1>
+            <p>Enter your attended and total classes to calculate your current attendance.</p>
+        </div>
+
+        <div class="attendance-card">
+            <form method="POST">
+                <div class="attendance-grid">
+                    <div class="attendance-box">
+                        <label class="attendance-label" for="attended">Classes Attended</label>
+                        <input class="attendance-input" id="attended"
+                               type="number" name="attended"
+                               placeholder="e.g. 42" min="0" required>
+                    </div>
+
+                    <div class="attendance-box">
+                        <label class="attendance-label" for="conducted">Total Classes</label>
+                        <input class="attendance-input" id="conducted"
+                               type="number" name="conducted"
+                               placeholder="e.g. 50" min="1" required>
+                    </div>
+                </div>
+
+                <button class="attendance-btn" type="submit">
+                    Calculate Attendance →
+                </button>
+            </form>
+
+            {% if result is not none %}
+            <div class="attendance-result">
+                <small>Your Attendance</small>
+                <strong>{{ result }}%</strong>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="attendance-error">{{ error }}</div>
+            {% endif %}
+
+            <div class="attendance-tip">
+                💡 Formula: (Classes Attended ÷ Total Classes) × 100
+            </div>
+        </div>
+
+        <a class="attendance-back" href="/">← Back to EduKit</a>
+    </div>
+</main>
+</body>
+</html>

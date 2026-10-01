@@ -1,0 +1,7 @@
+EduKit Admin Login
+URL: http://127.0.0.1:5000/admin/login
+Username: admin
+Password: EduKit@123
+
+Dark mode: use the moon/sun button in the header.
+This login is intended for local/demo use. Change credentials before public deployment.

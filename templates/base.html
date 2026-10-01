@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#5b5ce2">
+    <title>{% block title %}EduKit{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='header-fix.css') }}">
+    {% block head %}{% endblock %}
+
+<style>
+.header-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-left:auto;
+}
+.auth-link{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:10px 15px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:700;
+    white-space:nowrap;
+}
+.login-link{
+    color:#4f46e5;
+    border:1px solid #d9d6fe;
+    background:#fff;
+}
+.signup-link{
+    color:#fff;
+    background:linear-gradient(135deg,#5b5ce2,#7c3aed);
+}
+@media (max-width:900px){
+    .header-actions{gap:6px}
+    .auth-link{padding:8px 10px;font-size:13px}
+}
+@media (max-width:700px){
+    .header-actions{margin-left:0;flex-wrap:wrap}
+}
+</style>
+
+</head>
+<body>
+
+<header class="site-header">
+    <a href="/" class="brand" id="edukitBrand" aria-label="EduKit Home">
+        <img class="brand-logo brand-logo-full"
+             src="{{ url_for('static', filename='edukit-logo.png') }}"
+             alt="EduKit logo">
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/tools">Tools</a>
+        <a href="/pdf">PDF Tools</a>
+        <a href="/image-tools">Image Tools</a>
+    </nav>
+
+    <div class="header-actions">
+        <a class="auth-link login-link" href="/login">Log in</a>
+        <a class="auth-link signup-link" href="/signup">Sign up</a>
+        <a class="header-cta" href="/tools">Explore Tools →</a>
+    </div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-brand">🎓 EduKit</div>
+            <p>Simple, useful tools for students.</p>
+        </div>
+        <div class="footer-links">
+            <a href="/">Home</a>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/tools">Tools</a>
+            <a href="/pdf">PDF Tools</a>
+            <a href="/image-tools">Image Tools</a>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 EduKit · Student Productivity Tools</div>
+</footer>
+
+
+<script>
+(function () {
+    const logo = document.getElementById("edukitBrand");
+    if (!logo) return;
+
+    let timer = null;
+
+    logo.addEventListener("click", function (event) {
+        event.preventDefault();
+
+        if (timer !== null) {
+            clearTimeout(timer);
+            timer = null;
+            window.location.href = "/admin/login";
+            return;
+        }
+
+        timer = setTimeout(function () {
+            timer = null;
+            window.location.href = "/";
+        }, 280);
+    });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+.pdf-page{
+  min-height:calc(100vh - 70px);
+  padding:45px 18px 70px;
+  background:
+    radial-gradient(circle at 8% 10%,rgba(91,92,226,.13),transparent 28%),
+    radial-gradient(circle at 92% 15%,rgba(236,72,153,.10),transparent 28%);
+}
+.pdf-wrap{max-width:1120px;margin:auto}
+.pdf-head{text-align:center;margin-bottom:30px}
+.pdf-badge{
+  display:inline-flex;padding:8px 14px;border-radius:999px;
+  background:#eef2ff;color:#5146d8;font-size:13px;font-weight:800;
+}
+.pdf-head h1{
+  font-size:clamp(32px,5vw,48px);margin:14px 0 8px;
+  letter-spacing:-1.4px;
+}
+.pdf-head p{max-width:650px;margin:auto;color:#667085;line-height:1.6}
+.pdf-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:20px;
+}
+.pdf-card{
+  background:rgba(255,255,255,.94);
+  border:1px solid #e6e9f2;border-radius:24px;padding:25px;
+  box-shadow:0 18px 50px rgba(30,41,90,.09);
+  transition:.22s ease;
+}
+.pdf-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 25px 60px rgba(30,41,90,.14);
+  border-color:rgba(91,92,226,.25);
+}
+.pdf-icon{
+  width:58px;height:58px;border-radius:18px;
+  display:grid;place-items:center;font-size:28px;
+  background:linear-gradient(135deg,#eef2ff,#f5f3ff);
+  margin-bottom:17px;
+}
+.pdf-card h2{font-size:20px;margin:0 0 7px}
+.pdf-card p{font-size:14px;line-height:1.55;margin:0 0 20px;color:#667085}
+.pdf-label{
+  display:block;font-size:13px;font-weight:800;color:#344054;
+  margin-bottom:8px;
+}
+.pdf-file{
+  display:block;width:100%;padding:13px;
+  border:1.5px dashed #cbd5e1;border-radius:14px;
+  background:#f8fafc;cursor:pointer;
+}
+.pdf-file:hover{border-color:#5b5ce2;background:#f5f3ff}
+.pdf-input{
+  width:100%;height:48px;padding:0 13px;
+  border:1px solid #dfe4ee;border-radius:12px;
+  font:inherit;outline:none;background:#fff;
+}
+.pdf-input:focus{
+  border-color:#5b5ce2;
+  box-shadow:0 0 0 4px rgba(91,92,226,.10);
+}
+.pdf-btn{
+  width:100%;height:50px;margin-top:15px;border:0;border-radius:13px;
+  background:linear-gradient(135deg,#5b5ce2,#7c3aed);
+  color:#fff;font-weight:800;cursor:pointer;
+  box-shadow:0 10px 24px rgba(91,92,226,.20);
+  transition:.2s;
+}
+.pdf-btn:hover{transform:translateY(-2px)}
+.pdf-tip{
+  margin-top:14px;padding:10px 12px;border-radius:11px;
+  background:#f8fafc;color:#667085;font-size:12px;
+}
+.pdf-back{
+  display:block;text-align:center;margin-top:24px;
+  color:#5b5ce2;font-weight:800;font-size:14px;
+}
+@media(max-width:700px){
+  .pdf-page{padding:30px 14px 50px}
+  .pdf-grid{grid-template-columns:1fr}
+}
+</style>
+
+<section class="pdf-page">
+  <div class="pdf-wrap">
+    <div class="pdf-head">
+      <span class="pdf-badge">📄 EduKit Document Tools</span>
+      <h1>PDF Tools</h1>
+      <p>Merge, split, compress and convert your documents with a clean student-friendly workspace.</p>
+    </div>
+
+    <div class="pdf-grid">
+
+      <div class="pdf-card">
+        <div class="pdf-icon">🔗</div>
+        <h2>Merge PDFs</h2>
+        <p>Combine multiple PDF files into one document.</p>
+        <form method="post" action="{{ url_for('merge_pdf') }}" enctype="multipart/form-data">
+          <label class="pdf-label">Select PDFs</label>
+          <input class="pdf-file" type="file" name="pdfs" accept=".pdf" multiple required>
+          <button class="pdf-btn">Merge & Download</button>
+        </form>
+        <div class="pdf-tip">📚 Select two or more PDF files.</div>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon">✂️</div>
+        <h2>Split PDF</h2>
+        <p>Extract a specific page from a PDF document.</p>
+        <form method="post" action="{{ url_for('split_pdf') }}" enctype="multipart/form-data">
+          <label class="pdf-label">PDF file</label>
+          <input class="pdf-file" type="file" name="pdf" accept=".pdf" required>
+          <label class="pdf-label" style="margin-top:14px">Page number</label>
+          <input class="pdf-input" type="number" name="page" min="1" placeholder="Example: 2" required>
+          <button class="pdf-btn">Extract Page</button>
+        </form>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon">📉</div>
+        <h2>Compress PDF</h2>
+        <p>Optimize the PDF and download a smaller or optimized copy.</p>
+        <form method="post" action="{{ url_for('compress_pdf') }}" enctype="multipart/form-data">
+          <label class="pdf-label">PDF file</label>
+          <input class="pdf-file" type="file" name="pdf" accept=".pdf" required>
+          <button class="pdf-btn">Compress & Download</button>
+        </form>
+        <div class="pdf-tip">⚡ Useful when a PDF is too large to share.</div>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon">🖼️</div>
+        <h2>Images → PDF</h2>
+        <p>Combine JPG or PNG images into a single PDF.</p>
+        <form method="post" action="{{ url_for('images_to_pdf') }}" enctype="multipart/form-data">
+          <label class="pdf-label">Select images</label>
+          <input class="pdf-file" type="file" name="images" accept="image/png,image/jpeg" multiple required>
+          <button class="pdf-btn">Create PDF</button>
+        </form>
+        <div class="pdf-tip">🖼️ Select multiple images to create one document.</div>
+      </div>
+
+      <div class="pdf-card">
+        <div class="pdf-icon">🖼️</div>
+        <h2>PDF → Images</h2>
+        <p>Convert every PDF page into PNG images inside a ZIP file.</p>
+        <form method="post" action="{{ url_for('pdf_to_images') }}" enctype="multipart/form-data">
+          <label class="pdf-label">PDF file</label>
+          <input class="pdf-file" type="file" name="pdf" accept=".pdf" required>
+          <button class="pdf-btn">Convert & Download ZIP</button>
+        </form>
+        <div class="pdf-tip">📦 All converted pages are packed into a ZIP.</div>
+      </div>
+
+    </div>
+
+    <a class="pdf-back" href="/">← Back to EduKit</a>
+  </div>
+</section>
+{% endblock %}

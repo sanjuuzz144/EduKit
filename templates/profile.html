@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Student Profile - EduKit{% endblock %}
+{% block content %}
+<section class="profile-page">
+  <div class="profile-wrap">
+    <div class="profile-hero">
+      <span>👤 EduKit Profile</span>
+      <h1>Your Student Profile</h1>
+      <p>Save your basic academic details and keep them available on your dashboard.</p>
+    </div>
+    {% if saved %}<div class="save-message">✅ Profile saved successfully.</div>{% endif %}
+    <form class="profile-form" method="post">
+      <div class="field"><label for="name">Student Name</label><input id="name" name="name" type="text" placeholder="Enter your name" value="{{ profile.get('name','') }}" required></div>
+      <div class="field"><label for="course">Course</label><input id="course" name="course" type="text" placeholder="e.g. Integrated MSc Data Science and Computer Science" value="{{ profile.get('course','') }}"></div>
+      <div class="field"><label for="college">College</label><input id="college" name="college" type="text" placeholder="Enter your college" value="{{ profile.get('college','') }}"></div>
+      <div class="field"><label for="semester">Semester</label>
+        <select id="semester" name="semester">
+          <option value="">Select semester</option>
+          {% for n in range(1, 11) %}<option value="{{ n }}" {% if profile.get('semester') == n|string %}selected{% endif %}>Semester {{ n }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="form-actions"><a href="/dashboard" class="secondary-btn">← Dashboard</a><button type="submit" class="primary-btn">💾 Save Profile</button></div>
+    </form>
+  </div>
+</section>
+<style>
+.profile-page{min-height:calc(100vh - 70px);padding:44px 18px 70px;background:radial-gradient(circle at 8% 10%,rgba(91,92,226,.12),transparent 30%),#f8fafc}
+.profile-wrap{max-width:720px;margin:auto}.profile-hero{padding:34px;border-radius:26px;background:linear-gradient(135deg,#4f46e5,#7c3aed 60%,#ec4899);color:#fff;box-shadow:0 24px 60px rgba(79,70,229,.2)}
+.profile-hero span{font-size:12px;font-weight:800;background:rgba(255,255,255,.15);padding:7px 11px;border-radius:999px}.profile-hero h1{margin:18px 0 7px;color:#fff;font-size:36px}.profile-hero p{margin:0;color:rgba(255,255,255,.85);line-height:1.6}
+.save-message{margin:18px 0;padding:14px 16px;border-radius:14px;background:#ecfdf3;color:#067647;font-weight:700;font-size:13px}
+.profile-form{margin-top:20px;padding:28px;border:1px solid #e6e9f2;border-radius:22px;background:#fff;box-shadow:0 15px 40px rgba(30,41,90,.07)}
+.field{margin-bottom:18px}.field label{display:block;margin-bottom:7px;font-size:13px;font-weight:800;color:#344054}.field input,.field select{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #d0d5dd;border-radius:12px;background:#fff;font:inherit;color:#172033;outline:none}.field input:focus,.field select:focus{border-color:#6366f1;box-shadow:0 0 0 4px rgba(99,102,241,.10)}
+.form-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}.primary-btn,.secondary-btn{border:0;border-radius:12px;padding:12px 16px;font-weight:800;text-decoration:none;cursor:pointer;font-size:13px}.primary-btn{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff}.secondary-btn{background:#f2f4f7;color:#344054}
+@media(max-width:560px){.profile-page{padding:28px 14px 50px}.profile-hero{padding:27px 22px}.profile-hero h1{font-size:29px}.profile-form{padding:22px}.form-actions{flex-direction:column}.primary-btn,.secondary-btn{text-align:center}}
+</style>
+{% endblock %}

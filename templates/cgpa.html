@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CGPA Calculator - EduKit</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+.cgpa-page{
+  min-height:calc(100vh - 70px);
+  padding:48px 18px 70px;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(91,92,226,.13),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(6,182,212,.12),transparent 28%);
+}
+.cgpa-wrap{max-width:760px;margin:auto}
+.cgpa-head{
+  text-align:center;margin-bottom:26px;
+}
+.cgpa-badge{
+  display:inline-flex;padding:8px 13px;border-radius:999px;
+  background:#eef2ff;color:#5146d8;font-size:13px;font-weight:800;
+}
+.cgpa-head h1{font-size:clamp(32px,5vw,46px);margin:14px 0 8px;letter-spacing:-1.3px}
+.cgpa-head p{color:#667085;margin:0;line-height:1.6}
+.cgpa-card{
+  background:rgba(255,255,255,.92);
+  border:1px solid #e6e9f2;
+  border-radius:28px;
+  padding:30px;
+  box-shadow:0 22px 60px rgba(30,41,90,.11);
+}
+.cgpa-label{font-size:13px;font-weight:800;color:#344054;display:block;margin-bottom:9px}
+.cgpa-input{
+  width:100%;height:56px;padding:0 16px;
+  border:1px solid #dfe4ee;border-radius:15px;
+  background:#fff;color:#172033;font:inherit;font-size:16px;outline:none;
+}
+.cgpa-input:focus{
+  border-color:#5b5ce2;
+  box-shadow:0 0 0 4px rgba(91,92,226,.11);
+}
+.cgpa-help{
+  margin-top:10px;color:#667085;font-size:12px;line-height:1.5;
+}
+.cgpa-btn{
+  width:100%;height:54px;margin-top:20px;border:0;border-radius:15px;
+  color:#fff;font-weight:800;font-size:15px;cursor:pointer;
+  background:linear-gradient(135deg,#5b5ce2,#7c3aed);
+  box-shadow:0 12px 28px rgba(91,92,226,.22);
+  transition:.2s;
+}
+.cgpa-btn:hover{transform:translateY(-2px)}
+.cgpa-result{
+  margin-top:22px;padding:24px;text-align:center;border-radius:20px;
+  background:linear-gradient(135deg,#eef2ff,#f5f3ff);
+  border:1px solid #e0e7ff;
+}
+.cgpa-result small{display:block;color:#667085;font-weight:700}
+.cgpa-result strong{display:block;margin-top:6px;font-size:48px;color:#5146d8;letter-spacing:-2px}
+.cgpa-error{
+  margin-top:18px;padding:14px;border-radius:14px;
+  background:#fff1f0;color:#b42318;border:1px solid #ffd6d2;
+}
+.cgpa-back{
+  display:block;text-align:center;margin-top:22px;
+  color:#5b5ce2;font-weight:800;font-size:14px;
+}
+</style>
+</head>
+<body>
+<header><a href="/" class="logo">🎓 EduKit</a><span>Student tools, made simple.</span></header>
+
+<main class="cgpa-page">
+  <div class="cgpa-wrap">
+    <div class="cgpa-head">
+      <span class="cgpa-badge">📚 Academic Calculator</span>
+      <h1>🧮 CGPA Calculator</h1>
+      <p>Enter your grade points and calculate your CGPA instantly.</p>
+    </div>
+
+    <div class="cgpa-card">
+      <form method="post">
+        <label class="cgpa-label" for="grades">Grade points</label>
+        <input
+          class="cgpa-input"
+          id="grades"
+          name="grades"
+          placeholder="Example: 8, 7.5, 9, 8.5"
+          autocomplete="off"
+          required
+        >
+        <div class="cgpa-help">
+          Enter each grade point separated by commas.
+        </div>
+
+        <button class="cgpa-btn" type="submit">Calculate CGPA →</button>
+      </form>
+
+      {% if result is not none %}
+      <div class="cgpa-result">
+        <small>Your CGPA</small>
+        <strong>{{result}}</strong>
+      </div>
+      {% endif %}
+
+      {% if error %}
+      <div class="cgpa-error">{{error}}</div>
+      {% endif %}
+    </div>
+
+    <a class="cgpa-back" href="/">← Back to EduKit</a>
+  </div>
+</main>
+</body>
+</html>

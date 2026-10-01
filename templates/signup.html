@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - EduKit</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f4f2ff, #eef7ff);
+            color: #17203a;
+        }
+
+        .topbar {
+            height: 76px;
+            padding: 0 6%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 15px rgba(0,0,0,.08);
+        }
+
+        .logo {
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 900;
+            color: #5146e5;
+        }
+
+        .nav a {
+            margin-left: 24px;
+            color: #344054;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .container {
+            min-height: calc(100vh - 76px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 35px 18px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 470px;
+            background: white;
+            padding: 34px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(49,46,129,.12);
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            margin: 0 0 24px;
+            color: #667085;
+        }
+
+        .error {
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            background: #fff1f0;
+            color: #b42318;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 7px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #d0d5dd;
+            border-radius: 11px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,.12);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 14px;
+            border: 0;
+            border-radius: 11px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .login-text {
+            margin-top: 20px;
+            text-align: center;
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .login-text a {
+            color: #4f46e5;
+            font-weight: 800;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="/" class="logo">EduKit</a>
+
+    <nav class="nav">
+        <a href="/">Home</a>
+        <a href="/login">Log in</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section class="card">
+
+        <h1>Create account</h1>
+
+        <p class="subtitle">
+            Create your EduKit student account.
+        </p>
+
+        {% if error %}
+        <div class="error">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/signup">
+
+            <label for="name">Full Name</label>
+
+            <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Enter your full name"
+                required
+            >
+
+            <label for="username">Username</label>
+
+            <input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="Choose a username"
+                required
+            >
+
+            <label for="email">Email</label>
+
+            <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+            >
+
+            <label for="password">Password</label>
+
+            <input
+                id="password"
+                name="password"
+                type="password"
+                placeholder="At least 6 characters"
+                minlength="6"
+                required
+            >
+
+            <label for="confirm_password">Confirm Password</label>
+
+            <input
+                id="confirm_password"
+                name="confirm_password"
+                type="password"
+                placeholder="Re-enter your password"
+                minlength="6"
+                required
+            >
+
+            <button type="submit">
+                Create Account →
+            </button>
+
+        </form>
+
+        <p class="login-text">
+            Already have an account?
+            <a href="/login">Log in</a>
+        </p>
+
+    </section>
+
+</main>
+
+</body>
+</html>

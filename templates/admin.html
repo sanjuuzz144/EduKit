@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - EduKit{% endblock %}
+{% block content %}
+<section class="admin-wrap">
+  <div class="admin-hero">
+    <div>
+      <span class="eyebrow">🛡️ ADMIN CONTROL CENTER</span>
+      <h1>Manage EduKit Users</h1>
+      <p>Edit student accounts, control access, and keep your user list organized.</p>
+    </div>
+    <div class="hero-actions">
+      <a href="/admin/users" class="secondary-btn">Full User List</a>
+      <a href="/admin/logout" class="danger-btn">Logout</a>
+    </div>
+  </div>
+
+  {% if saved %}<div class="notice success">✓ User saved successfully.</div>{% endif %}
+  {% if access_updated %}<div class="notice success">✓ User access updated.</div>{% endif %}
+  {% if deleted %}<div class="notice success">✓ User deleted.</div>{% endif %}
+  {% if error %}<div class="notice error">⚠ {{ error }}</div>{% endif %}
+
+  <div class="stats">
+    <div class="stat"><span>👥</span><strong>{{ total_users }}</strong><small>Total Users</small></div>
+    <div class="stat"><span>🟢</span><strong>{{ active_users }}</strong><small>Active Access</small></div>
+    <div class="stat"><span>🔴</span><strong>{{ blocked_users }}</strong><small>Blocked Access</small></div>
+  </div>
+
+  <div class="admin-grid">
+    <section class="panel">
+      <div class="panel-head"><h2>➕ Add User</h2><span>New accounts start active</span></div>
+      <form action="/admin/users/save" method="post" class="user-form">
+        <input type="hidden" name="user_id" value="">
+        <label>Name<input name="name" placeholder="Student name" required></label>
+        <label>Username<input name="username" placeholder="student01" required></label>
+        <label>Password<input name="password" type="password" minlength="6" placeholder="Set login password" required></label>
+        <label>Email<input name="email" type="email" placeholder="student@example.com"></label>
+        <label>Role
+          <select name="role">
+            <option>Student</option>
+            <option>Teacher</option>
+            <option>Staff</option>
+          </select>
+        </label>
+        <button class="primary-btn" type="submit">Create User →</button>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head"><h2>✏️ Edit User</h2><span>Use the Edit button below</span></div>
+      <p class="empty-edit">Select a user from the table and press <b>Edit</b>. The edit form will open on the dedicated user page.</p>
+      <a class="secondary-btn wide" href="/admin/users">Open User Manager →</a>
+    </section>
+  </div>
+
+  <section class="panel users-panel">
+    <div class="panel-head"><h2>👤 User Access</h2><span>{{ total_users }} accounts</span></div>
+    {% if users %}
+    <div class="table-scroll">
+      <table>
+        <thead><tr><th>User</th><th>Username</th><th>Role</th><th>Access</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for u in users %}
+          <tr>
+            <td><b>{{ u["name"] }}</b><small>{{ u["email"] or "No email" }}</small></td>
+            <td>{{ u["username"] }}</td>
+            <td><span class="role">{{ u["role"] }}</span></td>
+            <td>
+              {% if u["access"] %}
+                <span class="status active">● Active</span>
+              {% else %}
+                <span class="status blocked">● Blocked</span>
+              {% endif %}
+            </td>
+            <td class="actions">
+              <a class="edit-btn" href="/admin/users?edit={{ u['id'] }}">Edit</a>
+              <form action="/admin/users/toggle/{{ u['id'] }}" method="post" onsubmit="return confirm('Change this user access?')">
+                <button class="access-btn" type="submit">{{ "Disable" if u["access"] else "Enable" }}</button>
+              </form>
+              <form action="/admin/users/delete/{{ u['id'] }}" method="post" onsubmit="return confirm('Delete this user permanently?')">
+                <button class="delete-btn" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <div class="empty">No users yet. Create your first user above.</div>
+    {% endif %}
+  </section>
+</section>
+
+<style>
+.admin-wrap{max-width:1180px;margin:auto;padding:34px 18px 70px}
+.admin-hero{display:flex;justify-content:space-between;gap:22px;align-items:center;padding:30px;border-radius:26px;background:linear-gradient(135deg,#111827,#312e81 60%,#7c3aed);color:#fff;box-shadow:0 18px 45px rgba(49,46,129,.2)}
+.eyebrow{font-size:11px;font-weight:900;letter-spacing:1.3px;color:#c7d2fe}
+.admin-hero h1{margin:9px 0 6px;color:#fff;font-size:32px}.admin-hero p{margin:0;color:#dbeafe}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap}.hero-actions a{color:#fff;text-decoration:none}
+.secondary-btn,.danger-btn,.primary-btn,.edit-btn,.access-btn,.delete-btn{border:0;border-radius:11px;padding:10px 14px;font-weight:800;text-decoration:none;cursor:pointer;display:inline-block}
+.secondary-btn{background:#eef2ff;color:#3730a3}.danger-btn{background:#fee2e2;color:#991b1b}
+.primary-btn{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff}.wide{display:block;text-align:center}
+.notice{margin:18px 0;padding:12px 15px;border-radius:12px;font-weight:700;font-size:13px}.success{background:#ecfdf3;color:#027a48}.error{background:#fef3f2;color:#b42318}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:20px 0}.stat{background:#fff;border:1px solid #e6e9f2;border-radius:18px;padding:19px;box-shadow:0 12px 30px rgba(30,41,90,.06)}.stat span{font-size:20px}.stat strong{display:block;font-size:28px;color:#172033;margin-top:7px}.stat small{color:#667085}
+.admin-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}.panel{background:#fff;border:1px solid #e6e9f2;border-radius:20px;padding:22px;box-shadow:0 12px 30px rgba(30,41,90,.05)}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:16px}.panel-head h2{margin:0;color:#172033;font-size:18px}.panel-head span{color:#667085;font-size:12px}
+.user-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.user-form label{font-size:12px;font-weight:800;color:#344054}.user-form input,.user-form select{width:100%;box-sizing:border-box;margin-top:6px;padding:11px;border:1px solid #d0d5dd;border-radius:10px;background:#fff;font:inherit}.user-form .primary-btn{grid-column:1/-1}
+.empty-edit{color:#667085;line-height:1.6;min-height:55px}
+.table-scroll{overflow:auto}table{width:100%;border-collapse:collapse;min-width:780px}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid #edf0f5;font-size:13px}th{font-size:11px;text-transform:uppercase;color:#667085}td small{display:block;color:#98a2b3;margin-top:3px}.role{padding:5px 8px;border-radius:8px;background:#f2f4f7;color:#344054;font-size:11px;font-weight:800}.status{font-weight:800;font-size:12px}.active{color:#027a48}.blocked{color:#b42318}.actions{display:flex;gap:6px;align-items:center}.actions form{margin:0}.edit-btn{background:#eef2ff;color:#3730a3}.access-btn{background:#fff7ed;color:#c2410c}.delete-btn{background:#fef2f2;color:#b42318}.empty{text-align:center;padding:35px;color:#667085}
+html.dark-mode .panel,html.dark-mode .stat{background:#111827;border-color:#263044}html.dark-mode .panel-head h2,html.dark-mode .stat strong{color:#f8fafc}html.dark-mode .panel-head span,html.dark-mode .stat small,html.dark-mode .empty-edit{color:#98a2b3}html.dark-mode .user-form label{color:#d1d5db}html.dark-mode .user-form input,html.dark-mode .user-form select{background:#0f172a;color:#fff;border-color:#334155}html.dark-mode td{border-color:#263044;color:#e5e7eb}html.dark-mode th{color:#98a2b3}
+@media(max-width:760px){.admin-hero{flex-direction:column;align-items:flex-start}.stats{grid-template-columns:1fr}.admin-grid{grid-template-columns:1fr}.user-form{grid-template-columns:1fr}.user-form .primary-btn{grid-column:auto}}
+</style>
+{% endblock %}

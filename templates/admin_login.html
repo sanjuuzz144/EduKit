@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Admin Login - EduKit{% endblock %}
+{% block content %}
+<section class="admin-page">
+  <div class="admin-box">
+    <div class="admin-icon">🔐</div>
+    <h1>Admin Login</h1>
+    <p>Sign in to access the EduKit admin area.</p>
+    {% if error %}<div class="admin-error">{{ error }}</div>{% endif %}
+    <form method="post">
+      <label>Username</label>
+      <input name="username" type="text" autocomplete="username" required>
+      <label>Password</label>
+      <input name="password" type="password" autocomplete="current-password" required>
+      <button type="submit">Login →</button>
+    </form>
+  </div>
+</section>
+<style>
+.admin-page{min-height:70vh;display:grid;place-items:center;padding:40px 18px;background:#f7f8fc}
+.admin-box{width:min(420px,100%);padding:32px;border-radius:24px;background:#fff;border:1px solid #e5e7eb;box-shadow:0 20px 55px rgba(30,41,90,.12)}
+.admin-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:#eef2ff;font-size:25px;margin-bottom:16px}
+.admin-box h1{margin:0 0 7px}.admin-box p{margin:0 0 22px;color:#667085;font-size:13px}
+.admin-box label{display:block;margin:14px 0 7px;font-size:13px;font-weight:800}
+.admin-box input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #d0d5dd;border-radius:12px;font:inherit}
+.admin-box button{width:100%;margin-top:22px;padding:13px;border:0;border-radius:12px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;font-weight:800;cursor:pointer}
+.admin-error{padding:11px;border-radius:10px;background:#fef3f2;color:#b42318;font-size:13px}
+</style>
+{% endblock %}

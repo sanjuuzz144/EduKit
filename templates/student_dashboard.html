@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard - EduKit{% endblock %}
+{% block content %}
+<div class="student-wrap">
+  <section class="hero">
+    <div><small>STUDENT DASHBOARD</small><h1>Hello, {{ user["name"] }} 👋</h1><p>Your EduKit account and student tools in one place.</p></div>
+    <div class="avatar">{{ user["name"][0]|upper }}</div>
+  </section>
+  <div class="cards">
+    <a href="/student/profile"><b>👤 My Profile</b><span>Edit your details</span></a>
+    <a href="/"><b>🧰 Student Tools</b><span>Open EduKit tools</span></a>
+    <a href="/student/profile"><b>🔐 Security</b><span>Change password</span></a>
+  </div>
+  <section class="account">
+    <h2>Account Information</h2>
+    <p><b>Username:</b> {{ user["username"] }}</p>
+    <p><b>Email:</b> {{ user["email"] or "Not added" }}</p>
+    <p><b>Role:</b> {{ user["role"] }}</p>
+    <p><b>Status:</b> <span>● Active</span></p>
+  </section>
+</div>
+<style>
+.student-wrap{max-width:1050px;margin:auto;padding:40px 18px}.hero{display:flex;justify-content:space-between;align-items:center;padding:30px;border-radius:25px;color:#fff;background:linear-gradient(135deg,#111827,#312e81,#7c3aed)}.hero small{font-weight:900;letter-spacing:1.5px;color:#c7d2fe}.hero h1{color:#fff;margin:8px 0}.hero p{margin:0;color:#dbeafe}.avatar{width:65px;height:65px;display:grid;place-items:center;border-radius:20px;background:#ffffff20;font-size:27px;font-weight:900}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:18px 0}.cards a{padding:20px;border-radius:18px;background:#fff;border:1px solid #e5e7eb;text-decoration:none;color:#172033}.cards b,.cards span{display:block}.cards span{color:#667085;font-size:12px;margin-top:6px}.account{padding:22px;border-radius:18px;background:#fff;border:1px solid #e5e7eb}.account span{color:#027a48;font-weight:800}@media(max-width:700px){.cards{grid-template-columns:1fr}.hero{align-items:flex-start}}
+</style>
+{% endblock %}
