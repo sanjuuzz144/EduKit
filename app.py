@@ -1,7 +1,7 @@
 import os
 import sqlite3
 import hashlib
-from flask import Flask, render_template, request, send_file, session, redirect
+from flask import Flask, render_template, request, send_file, session, redirect, response
 from pypdf import PdfWriter, PdfReader
 from io import BytesIO
 from PIL import Image
@@ -773,15 +773,29 @@ Sitemap: https://edukit-3q1k.onrender.com/sitemap.xml
 @app.route("/sitemap.xml")
 def sitemap_xml():
     urls = [
-        "/",
-        "/tools",
-        "/cgpa",
-        "/percentage",
-        "/attendance",
-        "/qr",
-        "/pdf",
-        "/image-tools"
+        "https://edukit-3q1k.onrender.com/",
+        "https://edukit-3q1k.onrender.com/tools",
+        "https://edukit-3q1k.onrender.com/cgpa",
+        "https://edukit-3q1k.onrender.com/percentage",
+        "https://edukit-3q1k.onrender.com/attendance",
+        "https://edukit-3q1k.onrender.com/qr",
+        "https://edukit-3q1k.onrender.com/pdf",
+        "https://edukit-3q1k.onrender.com/image-tools"
     ]
+
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+
+    for url in urls:
+        xml += f"    <url><loc>{url}</loc></url>\n"
+
+    xml += "</urlset>"
+
+    return Response(
+        xml,
+        status=200,
+        mimetype="application/xml"
+    )
 
     xml_urls = "\n".join(
         f"    <url><loc>https://edukit-3q1k.onrender.com{url}</loc></url>"
